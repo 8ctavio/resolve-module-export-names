@@ -11,6 +11,9 @@ importers:
       oxlint:
         specifier: ^1.11.1
         version: 1.11.1
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
 
 packages:
 
@@ -87,6 +90,11 @@ packages:
     engines: {node: '>=8.*'}
     hasBin: true
 
+  typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
 snapshots:
 
   '@oxlint-tsgolint/darwin-arm64@0.0.1':
@@ -152,3 +160,5 @@ snapshots:
       '@oxlint/win32-arm64': 1.11.1
       '@oxlint/win32-x64': 1.11.1
       oxlint-tsgolint: 0.0.1
+
+  typescript@5.9.2: {}

@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"module": "node20",
+		"moduleResolution": "nodenext",
+		"moduleDetection": "force",
+		"verbatimModuleSyntax": true,
+		"strict": true,
+		"erasableSyntaxOnly": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true
+	}
+}

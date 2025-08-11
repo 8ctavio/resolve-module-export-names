@@ -2,21 +2,24 @@
     "name": "resolve-module-export-names",
     "version": "0.0.0",
     "license": "MIT",
-	"private": true,
+    "private": true,
     "description": "Retrieve names of JavaScript modules' exported values",
     "author": "Octavio Araiza (https://github.com/8ctavio)",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/8ctavio/resolve-module-export-names.git"
     },
-	"bugs": "https://github.com/8ctavio/resolve-module-export-names/issues",
+    "bugs": "https://github.com/8ctavio/resolve-module-export-names/issues",
     "packageManager": "pnpm@10.14.0",
-	"type": "module",
+    "type": "module",
     "scripts": {
-        "lint": "oxlint"
+        "lint": "oxlint",
+        "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
+        "dts": "tsc -b ./tsconfig.lib.json"
     },
     "exports": "./src/index.js",
     "devDependencies": {
-        "oxlint": "^1.11.1"
+        "oxlint": "^1.11.1",
+        "typescript": "^5.9.2"
     }
 }
