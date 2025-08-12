@@ -1,5 +1,5 @@
 {
-    "name": "resolve-module-export-names",
+    "name": "@8ctavio/resolve-module-export-names",
     "version": "0.0.0",
     "license": "MIT",
     "private": true,
@@ -10,19 +10,10 @@
         "url": "git+https://github.com/8ctavio/resolve-module-export-names.git"
     },
     "bugs": "https://github.com/8ctavio/resolve-module-export-names/issues",
-    "packageManager": "pnpm@10.14.0",
-    "devEngines": {
-        "runtime": [
-            {
-                "name": "node",
-                "version": "^22.17.1",
-                "onFail": "warn"
-            }
-        ]
-    },
     "type": "module",
     "scripts": {
         "lint": "oxlint",
+		"test": "vitest run",
         "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
         "dts": "tsc -b ./tsconfig.lib.json"
     },
@@ -34,6 +25,15 @@
     "devDependencies": {
         "@types/node": "^24.2.1",
         "oxlint": "^1.11.1",
-        "typescript": "^5.9.2"
-    }
+        "typescript": "^5.9.2",
+        "vitest": "^3.2.4"
+    },
+    "devEngines": {
+        "runtime": [{
+            "name": "node",
+            "version": "^22.17.1",
+            "onFail": "warn"
+        }]
+    },
+    "packageManager": "pnpm@10.14.0"
 }
