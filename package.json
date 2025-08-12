@@ -13,7 +13,7 @@
     "type": "module",
     "scripts": {
         "lint": "oxlint",
-		"test": "vitest run",
+        "test": "vitest run",
         "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
         "dts": "tsc -b ./tsconfig.lib.json"
     },
@@ -29,16 +29,18 @@
     },
     "devDependencies": {
         "@types/node": "^24.2.1",
-        "oxlint": "^1.11.1",
+        "oxlint": "^1.11.2",
         "typescript": "^5.9.2",
         "vitest": "^3.2.4"
     },
     "devEngines": {
-        "runtime": [{
-            "name": "node",
-            "version": "^22.17.1",
-            "onFail": "warn"
-        }]
+        "runtime": [
+            {
+                "name": "node",
+                "version": "^22.17.1",
+                "onFail": "warn"
+            }
+        ]
     },
     "packageManager": "pnpm@10.14.0"
 }
