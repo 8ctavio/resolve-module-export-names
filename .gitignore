@@ -3,6 +3,7 @@ node_modules
 
 # Bundles
 dist
+dist-*
 
 # env files
 .env

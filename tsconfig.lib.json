@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"declaration": true,
 		"emitDeclarationOnly": true,
-		"outDir": "./src/types/dist",
+		"outDir": "./src/dist-dts",
 		"declarationMap": true,
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.lib.tsbuildinfo"
 	},

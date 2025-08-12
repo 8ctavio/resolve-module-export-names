@@ -17,6 +17,11 @@
         "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
         "dts": "tsc -b ./tsconfig.lib.json"
     },
+    "files": [
+        "src",
+        "dist-dts",
+        "!types"
+    ],
     "exports": "./src/index.js",
     "dependencies": {
         "oxc-parser": "^0.81.0",
