@@ -13,17 +13,17 @@ let resolvePath
 /**
  * @template { boolean } [AsSet = boolean]
  * @typedef { object } ResolveModuleExportNamesOptions
- * @property { AsSet } asSet
+ * @property { AsSet } [asSet]
  */
 
 /**
  * @template { boolean } [AsSet = false]
- * @override
+ * @overload
  * @param { string } specifier
  * @param { string } directory
- * @param { ResolveModuleExportNamesOptions<AsSet> } options
+ * @param { ResolveModuleExportNamesOptions<AsSet> } [options]
  * @returns {(
- * 		AsSet extends true ? string[] : Set<string> 
+ * 		AsSet extends true ? Set<string> : string[]
  * )}
  */
 
@@ -46,55 +46,50 @@ export function resolveModuleExportNames(specifier, directory, options = {}) {
 		asSet = false
 	} = options
 
-	try {
-		const resolveResult = resolvePath.sync(directory, specifier)
-		if (resolveResult.error) {
-			throw new Error(resolveResult.error)
-		}
-
-		const modulePath = /** @type {string} */(resolveResult.path)
-		const parseResult = parseSync(
-			basename(modulePath),
-			readFileSync(modulePath, 'utf-8')
-		)
-		if (parseResult.errors.length > 0) {
-			const errors = []
-			for (const error of parseResult.errors) {
-				if (error.severity === 'Error') {
-					errors.push(error)
-				} else if (error.severity === 'Warning') {
-					console.warn(error.message, error)
-				} else {
-					console.info(error.message, error)
-				}
-			}
-			if (errors.length > 0) {
-				throw new Error('Parse errors encountered', { cause: errors })
-			}
-		}
-
-		/** @type { Set<string> } */
-		const exportNames = new Set()
-		for (const staticExport of parseResult.module.staticExports) {
-			for (const entry of staticExport.entries) {
-				if (entry.exportName.kind === 'Name') {
-					exportNames.add(/** @type {string} */(entry.exportName.name))
-				} else if (entry.importName.kind === 'AllButDefault') {
-					const reExportedModuleSpecifier = /** @type {ValueSpan} */(entry.moduleRequest).value
-					resolveModuleExportNames(
-						reExportedModuleSpecifier,
-						dirname(modulePath), 
-						{ asSet: true }
-					).forEach(exportName => {
-						exportNames.add(exportName)
-					})
-				}
-			}
-		}
-
-		return asSet ? exportNames : Array.from(exportNames)
-	} catch(error) {
-		console.error(error)
-		throw error
+	const resolveResult = resolvePath.sync(directory, specifier)
+	if (resolveResult.error) {
+		throw new Error(resolveResult.error)
 	}
+
+	const modulePath = /** @type {string} */(resolveResult.path)
+	const parseResult = parseSync(
+		basename(modulePath),
+		readFileSync(modulePath, 'utf-8')
+	)
+	if (parseResult.errors.length > 0) {
+		const errors = []
+		for (const error of parseResult.errors) {
+			if (error.severity === 'Error') {
+				errors.push(error)
+			} else if (error.severity === 'Warning') {
+				console.warn(error.message, error)
+			} else {
+				console.info(error.message, error)
+			}
+		}
+		if (errors.length > 0) {
+			throw new Error('Parse errors encountered', { cause: errors })
+		}
+	}
+
+	/** @type { Set<string> } */
+	const exportNames = new Set()
+	for (const staticExport of parseResult.module.staticExports) {
+		for (const entry of staticExport.entries) {
+			if (entry.exportName.kind === 'Name') {
+				exportNames.add(/** @type {string} */(entry.exportName.name))
+			} else if (entry.importName.kind === 'AllButDefault') {
+				const reExportedModuleSpecifier = /** @type {ValueSpan} */(entry.moduleRequest).value
+				resolveModuleExportNames(
+					reExportedModuleSpecifier,
+					dirname(modulePath), 
+					{ asSet: true }
+				).forEach(exportName => {
+					exportNames.add(exportName)
+				})
+			}
+		}
+	}
+
+	return asSet ? exportNames : Array.from(exportNames)
 }
