@@ -11,6 +11,15 @@
     },
     "bugs": "https://github.com/8ctavio/resolve-module-export-names/issues",
     "packageManager": "pnpm@10.14.0",
+    "devEngines": {
+        "runtime": [
+            {
+                "name": "node",
+                "version": "^22.17.1",
+                "onFail": "warn"
+            }
+        ]
+    },
     "type": "module",
     "scripts": {
         "lint": "oxlint",
@@ -18,7 +27,12 @@
         "dts": "tsc -b ./tsconfig.lib.json"
     },
     "exports": "./src/index.js",
+    "dependencies": {
+        "oxc-parser": "^0.81.0",
+        "oxc-resolver": "^11.6.1"
+    },
     "devDependencies": {
+        "@types/node": "^24.2.1",
         "oxlint": "^1.11.1",
         "typescript": "^5.9.2"
     }
