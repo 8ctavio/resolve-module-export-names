@@ -19,10 +19,14 @@
     },
     "files": [
         "src",
-        "dist-dts",
-        "!types"
+        "dist-dts"
     ],
-    "exports": "./src/index.js",
+    "exports": {
+        ".": {
+            "type": "./src/dist-dts/index.d.ts",
+            "import": "./src/index.js"
+        }
+    },
     "dependencies": {
         "oxc-parser": "^0.82.1",
         "oxc-resolver": "^11.6.1"
