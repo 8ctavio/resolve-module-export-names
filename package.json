@@ -24,7 +24,7 @@
     ],
     "exports": "./src/index.js",
     "dependencies": {
-        "oxc-parser": "^0.81.0",
+        "oxc-parser": "^0.82.1",
         "oxc-resolver": "^11.6.1"
     },
     "devDependencies": {
