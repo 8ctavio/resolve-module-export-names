@@ -1,6 +1,3 @@
-// @ts-nocheck
-// oxlint-disable
-
 // Declaration exports
 export let name1, name2, name3 = []
 export var name4, name5, name6 = {}
