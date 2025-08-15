@@ -8,7 +8,15 @@ import { ResolverFactory } from 'oxc-resolver'
  */
 
 /** @type { ResolverFactory } */
-let resolvePath
+let resolver
+
+/** @type { () => ResolverFactory } */
+function useResolver() {
+	return resolver ??= new ResolverFactory({
+		conditionNames: ['import'],
+		extensions: [] // enable extension enforcement
+	})
+}
 
 /**
  * @template { boolean } [AsSet = boolean]
@@ -37,16 +45,13 @@ let resolvePath
  * @returns { string[] | Set<string> } Export names
  */
 export function resolveModuleExportNames(specifier, directory, options = {}) {
-	resolvePath ??= new ResolverFactory({
-		conditionNames: ['import'],
-		extensions: [] // enable extension enforcement
-	})
-
 	const {
 		asSet = false
 	} = options
 
-	const resolveResult = resolvePath.sync(directory, specifier)
+	const resolve = useResolver()
+
+	const resolveResult = resolve.sync(directory, specifier)
 	if (resolveResult.error) {
 		throw new Error(resolveResult.error)
 	}
