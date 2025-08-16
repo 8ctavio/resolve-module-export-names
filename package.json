@@ -23,7 +23,7 @@
     ],
     "exports": {
         ".": {
-            "type": "./src/dist-dts/index.d.ts",
+            "types": "./src/dist-dts/index.d.ts",
             "import": "./src/index.js"
         }
     },
