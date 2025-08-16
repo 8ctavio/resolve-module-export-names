@@ -19,17 +19,20 @@ function useResolver() {
 }
 
 /**
+ * @template { Set<string> | undefined } [ExportNames = Set<string>]
  * @template { boolean } [AsSet = boolean]
  * @typedef { object } ResolveModuleExportNamesOptions
+ * @property { ExportNames } [exportNames]
  * @property { AsSet } [asSet]
  */
 
 /**
- * @template { boolean } [AsSet = false]
+ * @template { Set<string> | undefined } [ExportNames = undefined]
+ * @template { boolean  } [AsSet = ExportNames extends Set<string> ? true : false]
  * @overload
  * @param { string } specifier
  * @param { string } directory
- * @param { ResolveModuleExportNamesOptions<AsSet> } [options]
+ * @param { ResolveModuleExportNamesOptions<ExportNames, AsSet> } [options]
  * @returns {(
  * 		AsSet extends true ? Set<string> : string[]
  * )}
@@ -38,19 +41,15 @@ function useResolver() {
 /**
  * Returns the names of a module's exported values
  * 
- * @param { string } specifier - Module specifier (relative path or bare name).
+ * @param { string } specifier - Module specifier.
  * @param { string } directory - Reference directory path from which the module `specifier` is resolved.
  * @param { object } [options]
- * @param { boolean } [options.asSet] - If set to `true` a `Set` is returned; an `Array` is returned otherwise. Defaults to `false`.
+ * @param { boolean } [options.asSet] - If set to `true` a `Set` is returned; an `Array` is returned otherwise. Defaults to `false` if `exportNames` is not provided, and to `true` otherwise.
+ * @param { Set<string> } [options.exportNames] - `Set` in which to add found export names as they are found.
  * @returns { string[] | Set<string> } Export names
  */
 export function resolveModuleExportNames(specifier, directory, options = {}) {
-	const {
-		asSet = false
-	} = options
-
 	const resolve = useResolver()
-
 	const resolveResult = resolve.sync(directory, specifier)
 	if (resolveResult.error) {
 		throw new Error(resolveResult.error)
@@ -77,8 +76,11 @@ export function resolveModuleExportNames(specifier, directory, options = {}) {
 		}
 	}
 
-	/** @type { Set<string> } */
-	const exportNames = new Set()
+	const {
+		exportNames = new Set(),
+		asSet = Boolean(options.exportNames)
+	} = options
+
 	for (const staticExport of parseResult.module.staticExports) {
 		for (const entry of staticExport.entries) {
 			if (entry.exportName.kind === 'Name') {
@@ -87,11 +89,9 @@ export function resolveModuleExportNames(specifier, directory, options = {}) {
 				const reExportedModuleSpecifier = /** @type {ValueSpan} */(entry.moduleRequest).value
 				resolveModuleExportNames(
 					reExportedModuleSpecifier,
-					dirname(modulePath), 
-					{ asSet: true }
-				).forEach(exportName => {
-					exportNames.add(exportName)
-				})
+					dirname(modulePath),
+					{ exportNames }
+				)
 			}
 		}
 	}
