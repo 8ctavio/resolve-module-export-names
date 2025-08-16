@@ -3,3 +3,5 @@ export {
 	_ as "private-2",
 	_ as "private-3",
 }
+
+export * from './internal.js'

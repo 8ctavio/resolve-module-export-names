@@ -1,7 +1,5 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
 		"module": "node20",
 		"moduleResolution": "nodenext",
 		"moduleDetection": "force",

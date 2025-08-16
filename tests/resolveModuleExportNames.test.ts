@@ -1,7 +1,7 @@
 import { test, expect } from "vitest"
 import { dirname } from "node:path"
-import { ResolverFactory } from 'oxc-resolver'
-import { resolveModuleExportNames } from '@8ctavio/resolve-module-export-names'
+import { ResolverFactory } from "oxc-resolver"
+import { resolveModuleExportNames } from "@8ctavio/resolve-module-export-names"
 
 const resolve = new ResolverFactory({
 	conditionNames: ['import'],
@@ -21,6 +21,31 @@ test("Return Set of export names", () => {
 	expect(names).toBeInstanceOf(Set)
 })
 
+test("Return provided export names Set", () => {
+	const exportNames = new Set<string>()
+	expect(resolveModuleExportNames(namedExportsPath, import.meta.dirname, { exportNames })).toBe(exportNames)
+})
+
+test("Return Array when export names Set is provided", () => {
+	const exportNames = new Set<string>()
+	const names = resolveModuleExportNames(namedExportsPath, import.meta.dirname, {
+		exportNames,
+		asSet: false
+	})
+
+	expect(Array.isArray(names)).toBe(true)
+	expect(new Set(names)).toEqual(exportNames)
+})
+
+test("Collect export names into external Set", () => {
+	const exportNames = new Set<string>()
+	
+	const names1 = resolveModuleExportNames('pkg', fixturePackageDir, { exportNames })
+	const names2 = resolveModuleExportNames('@scope/pkg', fixturePackageDir, { exportNames })
+	
+	expect(names1.union(names2)).toEqual(exportNames)
+})
+
 test("Resolve modules' named exports", () => {
 	const moduleNames = Array.from({ length: 30 }, (_, i) => `name${i+1}`)
 
@@ -36,7 +61,7 @@ test("Resolve modules' named exports", () => {
 
 test("Resolve modules' aggregated export names", () => {
 	const exportNames = new Set()
-	const prefixes = ['public', 'private', 'pkg', 'pkg/sub', '@scope/pkg', '@scope/pkg/sub']
+	const prefixes = ['public', 'private', 'internal', 'pkg', 'pkg/sub', '@scope/pkg', '@scope/pkg/sub']
 	for (const prefix of prefixes) {
 		for (let i=1; i<=3; i++) {
 			exportNames.add(`${prefix}-${i}`)
