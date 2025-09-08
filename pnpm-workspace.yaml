@@ -1,0 +1,18 @@
+catalog:
+  '@types/node': 24.2.1
+  oxc-parser: 0.82.1
+  oxc-resolver: 11.6.1
+  oxlint: 1.11.2
+  typescript: 5.9.2
+  vitest: 3.2.4
+
+catalogMode: strict
+
+catalogs:
+  consumer:
+    oxc-parser: ^0.82.0
+    oxc-resolver: ^11.6.0
+
+overrides:
+  oxc-parser: 'catalog:'
+  oxc-resolver: 'catalog:'

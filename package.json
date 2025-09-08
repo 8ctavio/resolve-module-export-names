@@ -17,10 +17,7 @@
         "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
         "dts": "tsc -b ./tsconfig.lib.json"
     },
-    "files": [
-        "src",
-        "dist-dts"
-    ],
+    "files": ["src", "dist-dts"],
     "exports": {
         ".": {
             "types": "./src/dist-dts/index.d.ts",
@@ -28,14 +25,14 @@
         }
     },
     "dependencies": {
-        "oxc-parser": "^0.82.1",
-        "oxc-resolver": "^11.6.1"
+        "oxc-parser": "catalog:consumer",
+        "oxc-resolver": "catalog:consumer"
     },
     "devDependencies": {
-        "@types/node": "^24.2.1",
-        "oxlint": "^1.11.2",
-        "typescript": "^5.9.2",
-        "vitest": "^3.2.4"
+        "@types/node": "catalog:",
+        "oxlint": "catalog:",
+        "typescript": "catalog:",
+        "vitest": "catalog:"
     },
     "devEngines": {
         "runtime": [
@@ -46,5 +43,5 @@
             }
         ]
     },
-    "packageManager": "pnpm@10.14.0"
+    "packageManager": "pnpm@10.15.1"
 }

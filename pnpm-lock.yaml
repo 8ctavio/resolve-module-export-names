@@ -4,28 +4,47 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/node':
+      specifier: 24.2.1
+      version: 24.2.1
+    oxlint:
+      specifier: 1.11.2
+      version: 1.11.2
+    typescript:
+      specifier: 5.9.2
+      version: 5.9.2
+    vitest:
+      specifier: 3.2.4
+      version: 3.2.4
+
+overrides:
+  oxc-parser: 0.82.1
+  oxc-resolver: 11.6.1
+
 importers:
 
   .:
     dependencies:
       oxc-parser:
-        specifier: ^0.82.1
+        specifier: 0.82.1
         version: 0.82.1
       oxc-resolver:
-        specifier: ^11.6.1
+        specifier: 11.6.1
         version: 11.6.1
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
+        specifier: 'catalog:'
         version: 24.2.1
       oxlint:
-        specifier: ^1.11.2
+        specifier: 'catalog:'
         version: 1.11.2
       typescript:
-        specifier: ^5.9.2
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(@types/node@24.2.1)
 
 packages:
