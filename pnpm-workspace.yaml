@@ -1,9 +1,9 @@
 catalog:
-  '@types/node': 24.3.1
-  oxc-parser: 0.87.0
-  oxc-resolver: 11.7.1
-  oxlint: 1.14.0
-  typescript: 5.9.2
+  '@types/node': 24.6.2
+  oxc-parser: 0.93.0
+  oxc-resolver: 11.9.0
+  oxlint: 1.19.0
+  typescript: 5.9.3
   vitest: 3.2.4
 
 catalogMode: strict
