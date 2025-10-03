@@ -1,6 +1,6 @@
 {
     "name": "@8ctavio/resolve-module-export-names",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "license": "MIT",
     "description": "Retrieve names of JavaScript modules' exported values",
     "author": "Octavio Araiza (https://github.com/8ctavio)",
