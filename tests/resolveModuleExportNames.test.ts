@@ -3,13 +3,21 @@ import { dirname } from "node:path"
 import { ResolverFactory } from "oxc-resolver"
 import { resolveModuleExportNames } from "@8ctavio/resolve-module-export-names"
 
-const resolve = new ResolverFactory({
+const resolver = new ResolverFactory({
 	conditionNames: ['import'],
 	extensions: [] // enable extension enforcement
 })
+function resolve(specifier: string, directory = import.meta.dirname) {
+	const { path, error } = resolver.sync(directory, specifier)
+	if (error) {
+		throw new Error(error)
+	} else {
+		return path!
+	}
+}
 
 const namedExportsPath = './fixtures/named-exports.js'
-const fixturePackageDir = dirname(resolve.sync(import.meta.dirname, './fixtures/package/index.js').path!)
+const fixturePackageDir = dirname(resolve('./fixtures/package/index.js'))
 
 test("Return Array of export names", () => {
 	const names = resolveModuleExportNames(namedExportsPath, import.meta.dirname)
@@ -84,4 +92,18 @@ test("Resolve packages' export names", () => {
 			new Set(Array.from({ length: 3 }, (_, i) => `${pkg}-${i+1}`))
 		)
 	}
+})
+
+test("Provide resolved module path", () => {
+	const absolutePath = resolve(namedExportsPath)
+	expect(resolveModuleExportNames(absolutePath)).toEqual(
+		resolveModuleExportNames(namedExportsPath, import.meta.dirname)
+	)
+	expect(resolveModuleExportNames(absolutePath, { asSet: true })).toEqual(
+		resolveModuleExportNames(namedExportsPath, import.meta.dirname, { asSet: true })
+	)
+})
+
+test("Throw error if reference directory is not provided and specifier is not an absolute path", () => {
+	expect(() => resolveModuleExportNames(namedExportsPath)).toThrowError()
 })
