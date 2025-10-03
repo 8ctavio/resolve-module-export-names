@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs"
-import { basename, dirname } from "node:path"
+import { basename, dirname, isAbsolute } from "node:path"
 import { parseSync } from "oxc-parser"
 import { ResolverFactory } from 'oxc-resolver'
 
@@ -22,40 +22,68 @@ function useResolver() {
  * @template { Set<string> | undefined } [ExportNames = Set<string>]
  * @template { boolean } [AsSet = boolean]
  * @typedef { object } ResolveModuleExportNamesOptions
- * @property { ExportNames } [exportNames]
- * @property { AsSet } [asSet]
- */
-
-/**
- * @template { Set<string> | undefined } [ExportNames = undefined]
- * @template { boolean  } [AsSet = ExportNames extends Set<string> ? true : false]
- * @overload
- * @param { string } specifier
- * @param { string } directory
- * @param { ResolveModuleExportNamesOptions<ExportNames, AsSet> } [options]
- * @returns {(
- * 		AsSet extends true ? Set<string> : string[]
- * )}
+ * @property { ExportNames } [exportNames] `Set` in which to add export names as they are found.
+ * @property { AsSet } [asSet] If set to `true` a `Set` is returned; an `Array` is returned otherwise. Defaults to `false` if `exportNames` is not provided, and to `true` otherwise.
  */
 
 /**
  * Returns the names of a module's exported values
  * 
- * @param { string } specifier - Module specifier.
- * @param { string } directory - Reference directory path from which the module `specifier` is resolved.
- * @param { object } [options]
- * @param { boolean } [options.asSet] - If set to `true` a `Set` is returned; an `Array` is returned otherwise. Defaults to `false` if `exportNames` is not provided, and to `true` otherwise.
- * @param { Set<string> } [options.exportNames] - `Set` in which to add found export names as they are found.
- * @returns { string[] | Set<string> } Export names
+ * @template { Set<string> | undefined } [ExportNames = undefined]
+ * @template { boolean  } [AsSet = ExportNames extends Set<string> ? true : false]
+ * @overload
+ * @param { string } specifier Module specifier.
+ * @param { string } directory Reference directory path from which the module `specifier` is resolved.
+ * @param { ResolveModuleExportNamesOptions<ExportNames, AsSet> } [options] Options object
+ * @returns {(
+ * 		AsSet extends true ? Set<string> : string[]
+ * )} Export names
  */
-export function resolveModuleExportNames(specifier, directory, options = {}) {
-	const resolve = useResolver()
-	const resolveResult = resolve.sync(directory, specifier)
-	if (resolveResult.error) {
-		throw new Error(resolveResult.error)
-	}
 
-	const modulePath = /** @type {string} */(resolveResult.path)
+/**
+ * Returns the names of a module's exported values
+ * 
+ * @template { Set<string> | undefined } [ExportNames = undefined]
+ * @template { boolean  } [AsSet = ExportNames extends Set<string> ? true : false]
+ * @overload
+ * @param { string } specifier Module specifier (absolute path to module file).
+ * @param { ResolveModuleExportNamesOptions<ExportNames, AsSet> } [options] Options object
+ * @returns {(
+ * 		AsSet extends true ? Set<string> : string[]
+ * )} Export names
+ */
+
+/**
+ * @param { string } specifier
+ * @param {(
+ *   | [directory: string, options?: ResolveModuleExportNamesOptions]
+ *   | [options?: ResolveModuleExportNamesOptions]
+ * )} args
+ * @returns { string[] | Set<string> }
+ */
+export function resolveModuleExportNames(specifier, ...args) {
+	let modulePath = specifier
+	/** @type { ResolveModuleExportNamesOptions } */
+	let options
+	if (typeof args[0] === 'string') {
+		const [directory] = args
+		const resolve = useResolver()
+		const resolveResult = resolve.sync(directory, specifier)
+		if (resolveResult.error) {
+			throw new Error(resolveResult.error)
+		}
+		modulePath = /** @type {string} */(resolveResult.path)
+		options = args[1] ?? {}
+	} else {
+		if (!isAbsolute(specifier)) {
+			throw new Error(String.prototype.concat.call(
+				"Module specifier must be an absolute path when no reference directory is provided; ",
+				`received specifier "${specifier}"`
+			))
+		}
+		options = args[0] ?? {}
+	}
+	
 	const parseResult = parseSync(
 		basename(modulePath),
 		readFileSync(modulePath, 'utf-8')

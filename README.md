@@ -21,6 +21,10 @@ const exportNames = resolveModuleExportNames(path, dir, { asSet: true })
 const exportNames = new Set()
 resolveModuleExportNames('pkg-1', import.meta.dirname, { exportNames })
 resolveModuleExportNames('pkg-2', import.meta.dirname, { exportNames })
+
+// Omit reference directory if specifier is an absolute path
+const modulePath = resolvePath('./path/to/module.js', import.meta.dirname)
+const exportNames = resolveModuleExportNames(modulePath, {/* ... */})
 ```
 
 ### Definition
@@ -29,6 +33,10 @@ resolveModuleExportNames('pkg-2', import.meta.dirname, { exportNames })
 function resolveModuleExportNames(
 	specifier: string,
 	directory: string,
+	options?: ResolveModuleExportNamesOptions
+): string[] | Set<string>
+function resolveModuleExportNames(
+	specifier: string,
 	options?: ResolveModuleExportNamesOptions
 ): string[] | Set<string>
 
