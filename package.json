@@ -13,13 +13,15 @@
     "scripts": {
         "lint": "oxlint",
         "test": "vitest run",
-        "typecheck": "tsc -p ./tsconfig.lib.json --noEmit",
-        "dts": "tsc -b ./tsconfig.lib.json"
+        "typecheck": "pnpm typecheck:src && pnpm typecheck:tests",
+        "typecheck:src": "tsc -p ./tsconfig.src.json --noEmit",
+        "typecheck:tests": "tsc -p ./tsconfig.test.json",
+        "dts": "tsc -p ./tsconfig.src.json"
     },
-    "files": ["src", "dist-dts"],
+    "files": ["dts", "src", "!src/**/*.ts"],
     "exports": {
         ".": {
-            "types": "./src/dist-dts/index.d.ts",
+            "types": "./dts/index.d.ts",
             "import": "./src/index.js"
         }
     },

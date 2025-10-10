@@ -4,7 +4,7 @@ node_modules
 
 # Bundles
 dist
-dist-*
+/dts/
 
 # env files
 .env
