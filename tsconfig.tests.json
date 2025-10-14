@@ -2,7 +2,8 @@
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"customConditions": ["dev"]
 	},
 	"include": ["tests"],
 	"exclude": ["tests/fixtures"]

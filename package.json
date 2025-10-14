@@ -12,16 +12,21 @@
     "type": "module",
     "scripts": {
         "lint": "oxlint",
+        "dts": "tsc -p ./tsconfig.src.json",
         "test": "vitest run",
+        "test:prod": "vitest run --typecheck.tsconfig ./tsconfig.tests.prod.json",
         "typecheck": "pnpm typecheck:src && pnpm typecheck:tests",
         "typecheck:src": "tsc -p ./tsconfig.src.json --noEmit",
         "typecheck:tests": "tsc -p ./tsconfig.test.json",
-        "dts": "tsc -p ./tsconfig.src.json"
+        "typecheck:tests:prod": "tsc -p ./tsconfig.tests.json --customConditions null"
     },
     "files": ["dts", "src", "!src/**/*.ts"],
     "exports": {
         ".": {
-            "types": "./dts/index.d.ts",
+            "types": {
+                "dev": "./src/index.js",
+                "default": "./dts/index.d.ts"
+            },
             "import": "./src/index.js"
         }
     },
