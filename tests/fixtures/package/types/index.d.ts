@@ -1,3 +1,4 @@
+// @ts-nocheck
 export {
 	_ as "pkg-value-1",
 	_ as "pkg-value-2",
@@ -6,10 +7,10 @@ export {
 // Relative path
 export * from './public.js'
 
-// // Import map
+// Import map
 export * from '#private'
 
-// // Packages
+// Packages
 export * from 'pkg'
 export * from 'pkg/foo'
 export * from '@scope/pkg'

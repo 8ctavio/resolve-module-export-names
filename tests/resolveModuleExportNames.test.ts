@@ -17,7 +17,7 @@ function resolve(specifier: string, directory = import.meta.dirname) {
 }
 
 const namedExportsPath = './fixtures/named-exports.ts'
-const fixturePackageDir = dirname(resolve('./fixtures/package/index.js'))
+const fixturePackageDir = dirname(resolve('./fixtures/package/package.json'))
 
 suite("Return value", () => {
 	test("Return Array of export names", () => {
@@ -181,12 +181,12 @@ suite("Resolve modules' named exports", () => {
 suite("Resolve modules' aggregated export names", () => {
 	const exportedTypes = new Set<string>()
 	const exportedValues = new Set<string>()
-	for (const prefix of ['public', 'private', 'internal']) {
+	for (const prefix of ['public']) {
 		for (let i=1; i<=3; i++) {
 			exportedValues.add(`${prefix}-value-${i}`)
 		}
 	}
-	for (const prefix of ['pkg', 'pkg/foo', '@scope/pkg', '@scope/pkg/foo']) {
+	for (const prefix of ['internal', 'private', 'pkg', 'pkg/foo', '@scope/pkg', '@scope/pkg/foo']) {
 		for (let i=1; i<=3; i++) {
 			exportedTypes.add(`${prefix}-type-${i}`)
 			exportedValues.add(`${prefix}-value-${i}`)
@@ -195,12 +195,12 @@ suite("Resolve modules' aggregated export names", () => {
 
 	test("Include exported values only", () => {
 		expect(
-			resolveModuleExportNames('./index.js', fixturePackageDir, { asSet: true })
+			resolveModuleExportNames("./src/index.js", fixturePackageDir, { asSet: true })
 		).toEqual(exportedValues)
 	})
 	test("Include values and types", () => {
 		expect(
-			resolveModuleExportNames('./index.js', fixturePackageDir, {
+			resolveModuleExportNames("./types/index.d.ts", fixturePackageDir, {
 				includeTypes: true,
 				asSet: true
 			})
@@ -208,7 +208,7 @@ suite("Resolve modules' aggregated export names", () => {
 	})
 	test("Include exported types only", () => {
 		expect(
-			resolveModuleExportNames('./index.js', fixturePackageDir, {
+			resolveModuleExportNames("./types/index.d.ts", fixturePackageDir, {
 				includeTypes: 'only',
 				asSet: true
 			})
@@ -216,7 +216,7 @@ suite("Resolve modules' aggregated export names", () => {
 	})
 	test("Separate exported names and types", () => {
 		expect(
-			resolveModuleExportNames('./index.js', fixturePackageDir, {
+			resolveModuleExportNames("./types/index.d.ts", fixturePackageDir, {
 				includeTypes: 'separate',
 				asSet: true
 			})

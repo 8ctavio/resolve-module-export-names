@@ -5,6 +5,7 @@ import { ResolverFactory } from 'oxc-resolver'
 
 /**
  * @import { ValueSpan } from 'oxc-parser'
+ * @import { NapiResolveOptions } from 'oxc-resolver'
  */
 
 /** @type { ResolverFactory | undefined } */
@@ -14,9 +15,15 @@ let resolverImport
 const resolver = {
 	get types() {
 		if (!resolverTypes) {
+			/** @type { NapiResolveOptions } */
 			const options = {
 				conditionNames: ["types", "import"],
-				extensions: [] // enable extension enforcement
+				extensions: [], // enable extension enforcement
+				extensionAlias: {
+					".js": [".ts", ".d.ts", ".js"],
+					".ts": [".ts", ".d.ts", ".js"],
+					".d.ts": [".d.ts", ".ts", ".js"]
+				}
 			}
 			resolverTypes = resolverImport
 				? resolverImport.cloneWithOptions(options)
@@ -54,8 +61,8 @@ const resolver = {
  *     Whether to retrieve type export names.
  * 
  *     - If set to `only`, only type exports are retrieved.
- *     - If set to `separate`, value and type export names are separately collected
- *       into different arrays/sets. An array that stores the value and type export
+ *     - If set to `separate`, value and type export names are collected into
+ *       different arrays/sets. An array that stores the value and type export
  *       name arrays/sets in that order is returned.
  * 
  *     Defaults to `false`.

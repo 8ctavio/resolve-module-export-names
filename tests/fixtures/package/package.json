@@ -1,6 +1,12 @@
 {
-	"exports": "./index.js",
+	"exports": {
+		"types": "./types/index.d.ts",
+		"import": "./src/index.js"
+	},
 	"imports": {
-		"#private": "./private.js"
+		"#private": {
+			"types": "./types/private.types.js",
+			"import": "./src/private.js"
+		}
 	}
 }
