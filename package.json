@@ -17,7 +17,7 @@
         "test:prod": "vitest run --typecheck.tsconfig ./tsconfig.tests.prod.json",
         "typecheck": "pnpm typecheck:src && pnpm typecheck:tests",
         "typecheck:src": "tsc -p ./tsconfig.src.json --noEmit",
-        "typecheck:tests": "tsc -p ./tsconfig.test.json",
+        "typecheck:tests": "tsc -p ./tsconfig.tests.json",
         "typecheck:tests:prod": "tsc -p ./tsconfig.tests.json --customConditions null"
     },
     "files": ["dts", "src", "!src/**/*.ts"],
