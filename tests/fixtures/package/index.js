@@ -1,16 +1,16 @@
 export {
-	_ as "pkg-1",
-	_ as "pkg-2",
+	_ as "pkg-value-1",
+	_ as "pkg-value-2",
 }
 
 // Relative path
 export * from './public.js'
 
-// Import map
+// // Import map
 export * from '#private'
 
-// Packages
+// // Packages
 export * from 'pkg'
-export * from 'pkg/sub'
+export * from 'pkg/foo'
 export * from '@scope/pkg'
-export * from '@scope/pkg/sub'
+export * from '@scope/pkg/foo'

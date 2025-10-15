@@ -1,7 +1,7 @@
 export {
-	_ as "private-1",
-	_ as "private-2",
-	_ as "private-3",
+	_ as "private-value-1",
+	_ as "private-value-2",
+	_ as "private-value-3",
 }
 
 export * from './internal.js'

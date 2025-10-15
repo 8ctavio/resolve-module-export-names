@@ -1,5 +1,5 @@
 export {
-	_ as "internal-1",
-	_ as "internal-2",
-	_ as "internal-3",
+	_ as "internal-value-1",
+	_ as "internal-value-2",
+	_ as "internal-value-3",
 }

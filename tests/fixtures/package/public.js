@@ -1,5 +1,5 @@
 export {
-	_ as "public-1",
-	_ as "public-2",
-	_ as "public-3",
+	_ as "public-value-1",
+	_ as "public-value-2",
+	_ as "public-value-3",
 }
