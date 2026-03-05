@@ -7,7 +7,8 @@ export default defineConfig({
 		typecheck: {
 			enabled: true,
 			checker: 'tsc',
-			tsconfig: 'tsconfig.tests.json'
+			tsconfig: 'tsconfig.tests.json',
+			include: ['**/*.test.types.ts']
 		}
 	}
 })
