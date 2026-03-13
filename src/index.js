@@ -6,6 +6,7 @@ import { ResolverFactory } from 'oxc-resolver'
 /**
  * @import { ValueSpan } from 'oxc-parser'
  * @import { NapiResolveOptions } from 'oxc-resolver'
+ * @import { ResolveModuleExportNamesOptions, ResolvedModuleExportNames } from './index.types.js'
  */
 
 /** @type { ResolverFactory | undefined } */
@@ -46,74 +47,31 @@ const resolver = {
 }
 
 /**
- * @template { boolean | 'only' | 'separate' | undefined } [IncludeTypes = boolean | 'only' | 'separate']
- * @template { Set<string> | readonly [Set<string>, Set<string>] | undefined } [ExportNames = Set<string> | readonly [Set<string>, Set<string>]]
- * @template { boolean | undefined } [AsSet = boolean]
- * @typedef { object } ResolveModuleExportNamesOptions
- * @property {(
- *     ExportNames & NoInfer<IncludeTypes extends 'separate' ? readonly [Set<string>, Set<string>] : Set<string>>
- * )} [exportNames] 
- *     `Set` in which to add export names as they are found.
- * @property { AsSet } [asSet]
- *     If set to `true` a `Set` is returned; an `Array` is returned otherwise.
- *     Defaults to `false` if `exportNames` is not provided, and to `true` otherwise.
- * @property { IncludeTypes } [includeTypes]
- *     Whether to retrieve type export names.
- * 
- *     - If set to `only`, only type exports are retrieved.
- *     - If set to `separate`, value and type export names are collected into
- *       different arrays/sets. An array that stores the value and type export
- *       name arrays/sets in that order is returned.
- * 
- *     Defaults to `false`.
- */
-
-/**
- * Returns the names of a module's exported values
+ * Returns the names of a module's exported values.
  * 
  * @template { ResolveModuleExportNamesOptions["includeTypes"] } [IncludeTypes = undefined]
  * @template { ResolveModuleExportNamesOptions["exportNames"] } [ExportNames = undefined]
  * @template { ResolveModuleExportNamesOptions["asSet"] } [AsSet = (
- *     ExportNames extends (Set<string> | readonly [Set<string>, Set<string>]) ? true : false)
- * ]
+ *     ExportNames extends (Set<string> | readonly [Set<string>, Set<string>]) ? true : false
+ * )]
  * @overload
  * @param { string } specifier Module specifier.
  * @param { string } directory Reference directory path from which the module `specifier` is resolved.
- * @param { ResolveModuleExportNamesOptions<IncludeTypes, ExportNames, AsSet> } [options] Options object
- * @returns {(
- *     AsSet extends true
- *         ? IncludeTypes extends 'separate'
- *             ? ExportNames extends readonly [Set<string>, Set<string>]
- *                 ? ExportNames
- *                 : [Set<string>, Set<string>]
- *             : Set<string>
- *         : IncludeTypes extends 'separate'
- *             ? [string[], string[]]
- *             : string[]
- * )} Export names
-*/
+ * @param { ResolveModuleExportNamesOptions<IncludeTypes, ExportNames, AsSet> } [options] Options object.
+ * @returns { ResolvedModuleExportNames<IncludeTypes, ExportNames, AsSet> } Export names.
+ */
 /**
- * Returns the names of a module's exported values
+ * Returns the names of a module's exported values.
  * 
  * @template { ResolveModuleExportNamesOptions["includeTypes"] } [IncludeTypes = undefined]
  * @template { ResolveModuleExportNamesOptions["exportNames"] } [ExportNames = undefined]
  * @template { ResolveModuleExportNamesOptions["asSet"] } [AsSet = (
- *     ExportNames extends (Set<string> | readonly [Set<string>, Set<string>]) ? true : false)
- * ]
+ *     ExportNames extends (Set<string> | readonly [Set<string>, Set<string>]) ? true : false
+ * )]
  * @overload
  * @param { string } specifier Module specifier (absolute path to module file).
- * @param { ResolveModuleExportNamesOptions<IncludeTypes, ExportNames, AsSet> } [options] Options object
- * @returns {(
- *     AsSet extends true
- *         ? IncludeTypes extends 'separate'
- *             ? ExportNames extends readonly [Set<string>, Set<string>]
- *                 ? ExportNames
- *                 : [Set<string>, Set<string>]
- *             : Set<string>
- *         : IncludeTypes extends 'separate'
- *             ? [string[], string[]]
- *             : string[]
- * )} Export names
+ * @param { ResolveModuleExportNamesOptions<IncludeTypes, ExportNames, AsSet> } [options] Options object.
+ * @returns { ResolvedModuleExportNames<IncludeTypes, ExportNames, AsSet> } Export names.
  */
 /**
  * @param { string } specifier
